@@ -1,0 +1,10 @@
+﻿@{
+    ViewBag.Title = "Tasks";
+}
+
+<h2>Tasks</h2>
+
+@foreach (var task in @ViewBag.Tasks)
+{
+    <p><a href="/Home/Edit/@task.Id">@task.Name (@task.Status)</a></p>
+}

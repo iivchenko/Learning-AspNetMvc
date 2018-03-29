@@ -1,0 +1,32 @@
+﻿@using MyTaskList.Models
+
+@{
+    ViewBag.Title = "New Task";
+}
+
+<h4 style="padding-top: 20px; padding-bottom: 20px">Create a new task</h4>
+
+<form method="post" action="">
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Name</span>
+        </div>
+        <input name="Name" type="text" class="form-control" placeholder="New Task Name" aria-label="Username" aria-describedby="basic-addon1">
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupSelect01">Status</label>
+        </div>
+        <select name="Status" class="custom-select" id="inputGroupSelect01">
+            @foreach (var item in Enum.GetNames(typeof(TaskItemStatus)))
+            {
+                <option value="@item">@item</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-success" value="Add">Create</button>
+
+</form>

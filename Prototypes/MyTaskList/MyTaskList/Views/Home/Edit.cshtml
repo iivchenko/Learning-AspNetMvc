@@ -1,0 +1,38 @@
+﻿@using MyTaskList.Models
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+<form method="post" action="">
+    <input type="hidden" name="id" value="@ViewBag.Id" />
+    <table>
+        <tr>
+            <td>Name:</td>
+            <td><input type="text" name="Name" value="@ViewBag.Name" /></td>
+        </tr>
+
+        <tr>
+            <td>Status:</td>
+            <td>
+                <select name="Status">
+                    @foreach (var item in Enum.GetNames(typeof(TaskItemStatus)))
+                    {
+                        if (item == ViewBag.Status.ToString())
+                        {
+                            <option value="@item" selected="selected">@item</option>
+                        }
+                        else
+                        {
+                            <option value="@item">@item</option>
+                        }
+                    }
+                </select>
+            </td>
+        </tr>
+        <tr><td><input type="submit" value="Save" /></td></tr>
+    </table>
+</form>
+
