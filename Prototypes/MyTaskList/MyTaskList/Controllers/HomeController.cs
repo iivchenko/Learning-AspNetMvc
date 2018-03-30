@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.Data.Entity;
+using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using MyTaskList.Models;
 
@@ -9,16 +11,20 @@ namespace MyTaskList.Controllers
     {
         private readonly TasksContext _tasksContext = new TasksContext();
 
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            ViewBag.Tasks = _tasksContext.Tasks;
+            ViewBag.Tasks = await _tasksContext.Tasks.ToListAsync();
 
             return View();
         }
 
-        public ActionResult Search(string pattern)
+        public async Task<ActionResult> Search(string pattern)
         {
-            ViewBag.Tasks = _tasksContext.Tasks.ToList().Where(x => Regex.IsMatch(x.Name, pattern));
+            // TODO: Think on a better sollution.
+            var tasks = await _tasksContext.Tasks.ToListAsync();
+
+            // TODO: Think on regex validation
+            ViewBag.Tasks = tasks.Where(x => Regex.IsMatch(x.Name, pattern));
             
             return View("Index");
         }
@@ -30,37 +36,40 @@ namespace MyTaskList.Controllers
         }
 
         [HttpPost]
-        public ActionResult New(string name, TaskItemStatus status)
+        public async Task<ActionResult> New(string name, TaskItemStatus status)
         {
             _tasksContext.Tasks.Add(new TaskItem {Name = name, Status = status});
-            _tasksContext.SaveChanges();
+            await _tasksContext.SaveChangesAsync();
 
-            ViewBag.Tasks = _tasksContext.Tasks;
+            ViewBag.Tasks = await _tasksContext.Tasks.ToListAsync();
 
             return RedirectToAction("Index");
         }
 
         [HttpGet]
-        public ActionResult Edit(long id)
+        public async Task<ActionResult> Edit(long id)
         {
+            // TODO: Make a better code
             @ViewBag.Id = id;
-            @ViewBag.Name = _tasksContext.Tasks.Single(x => x.Id == id).Name;
-            @ViewBag.Status = _tasksContext.Tasks.Single(x => x.Id == id).Status;
+
+            var task = await _tasksContext.Tasks.SingleAsync(x => x.Id == id);
+            @ViewBag.Name = task.Name;
+            @ViewBag.Status = task.Status;
 
             return View();
         }
 
         [HttpPost]
-        public ActionResult Edit(long id, string name, TaskItemStatus status)
+        public async Task<ActionResult> Edit(long id, string name, TaskItemStatus status)
         {
-            var task = _tasksContext.Tasks.Single(x => x.Id == id);
+            var task = await _tasksContext.Tasks.SingleAsync(x => x.Id == id);
 
             task.Name = name;
             task.Status = status;
 
-            _tasksContext.SaveChanges();
+            await _tasksContext.SaveChangesAsync();
 
-            ViewBag.Tasks = _tasksContext.Tasks;
+            ViewBag.Tasks = await _tasksContext.Tasks.ToListAsync();
 
             return RedirectToAction("Index");
         }
