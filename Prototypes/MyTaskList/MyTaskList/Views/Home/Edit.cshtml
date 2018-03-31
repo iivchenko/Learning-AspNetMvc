@@ -1,38 +1,45 @@
-﻿@using MyTaskList.Models
+﻿@model TaskItem
+@using MyTaskList.Models
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit Task";
 }
 
-<h2>Edit</h2>
+<p><h4>Edit '@Model.Name'</h4></p>
 
 <form method="post" action="">
-    <input type="hidden" name="id" value="@ViewBag.Id" />
-    <table>
-        <tr>
-            <td>Name:</td>
-            <td><input type="text" name="Name" value="@ViewBag.Name" /></td>
-        </tr>
+    <input type="hidden" name="id" value="@Model.Id" />
 
-        <tr>
-            <td>Status:</td>
-            <td>
-                <select name="Status">
-                    @foreach (var item in Enum.GetNames(typeof(TaskItemStatus)))
-                    {
-                        if (item == ViewBag.Status.ToString())
-                        {
-                            <option value="@item" selected="selected">@item</option>
-                        }
-                        else
-                        {
-                            <option value="@item">@item</option>
-                        }
-                    }
-                </select>
-            </td>
-        </tr>
-        <tr><td><input type="submit" value="Save" /></td></tr>
-    </table>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Name</span>
+        </div>
+        <input name="Name" value="@Model.Name" type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" />
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupSelect01">Status</label>
+        </div>
+        <select name="Status" class="custom-select" id="inputGroupSelect01">
+            @foreach (var item in Enum.GetNames(typeof(TaskItemStatus)))
+            {
+                <option value="@item" @If(@item, @Model.Status.ToString(), @select().ToString())>@item</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+    
 </form>
 
+@helper select()
+    {@("selected=\"selected\"")}
+
+@helper If(string x, string y, string then)
+    {
+        if (x == y)
+        {
+            @then
+        }
+}
