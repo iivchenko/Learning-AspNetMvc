@@ -1,12 +1,11 @@
-﻿using System;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 
 namespace MyTaskList.Models
 {
     public sealed class TasksContext : DbContext
     {
         public TasksContext()
-            : base("Default")
+            : base("PerformaceDb")
         {
         }
 
