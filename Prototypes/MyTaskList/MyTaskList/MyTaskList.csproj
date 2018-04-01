@@ -154,6 +154,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Home\IndexViewModel.cs" />
+    <Compile Include="Models\Pagination\Page.cs" />
+    <Compile Include="Models\Pagination\PageViewModel.cs" />
     <Compile Include="Models\TaskItem.cs" />
     <Compile Include="Models\TaskItemStatus.cs" />
     <Compile Include="Models\TasksContext.cs" />

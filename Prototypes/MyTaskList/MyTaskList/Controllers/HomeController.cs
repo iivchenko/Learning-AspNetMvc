@@ -1,30 +1,45 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using MyTaskList.Models;
+using MyTaskList.Models.Home;
 
 namespace MyTaskList.Controllers
 {
     public class HomeController : Controller
     {
+        private const int PageSize = 20;
+        private const int PagesCount = 5;
         private readonly TasksContext _tasksContext = new TasksContext();
 
-        public async Task<ActionResult> Index()
+        [HttpGet]
+        public async Task<ActionResult> Index(string pattern = "", int page = 1)
         {
-            return View(await _tasksContext.Tasks.ToListAsync());
-        }
+            var totalPages = (int)Math.Ceiling(_tasksContext.Tasks.Where(x => x.Name.Contains(pattern)).Count() / (decimal)PageSize);
 
-        public async Task<ActionResult> Search(string pattern)
-        {
+            if (page < 1 || page > totalPages)
+            {
+                return new HttpNotFoundResult($"Invalid page '{page}'! Should be in range from 1 to {totalPages}");
+            }
+
             var tasks =
-                await
-                _tasksContext
+                await _tasksContext
                     .Tasks
                     .Where(x => x.Name.Contains(pattern))
-                    .ToListAsync();
+                    .OrderBy(x => x.Id)
+                    .Skip((page - 1) * PageSize)
+                    .Take(PageSize).ToListAsync();
 
-            return View("Index", tasks);
+            var indexVm = new IndexViewModel
+            {
+                Pagination = new Models.Pagination.PageViewModel(totalPages, PagesCount, page),
+                Tasks = tasks,
+                Pattern = pattern
+            };
+
+            return View("Index", indexVm);
         }
 
         [HttpGet]
