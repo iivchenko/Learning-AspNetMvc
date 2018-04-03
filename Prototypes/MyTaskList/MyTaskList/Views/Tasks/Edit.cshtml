@@ -5,45 +5,39 @@
     ViewBag.Title = "Edit Task";
 }
 
-<p><h4>Edit '@Model.Name'</h4></p>
+<br/>
 
 <form method="post" action="">
 
     <input type="hidden" name="id" value="@Model.Id" />
 
-    <div class="row">
-        <div class="col-9">
-
-            <div class="input-group">
-
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon1">Name</span>
-                    </div>
-                    <input name="Name" value="@Model.Name" type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" />
-                </div>
-            </div>
-        </div>
-        <div class="col">
+    <div style="display: flex">
+        <div class="input-group">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <label class="input-group-text" for="inputGroupSelect01">Status</label>
+                    <span class="input-group-text" id="basic-addon1">Name</span>
                 </div>
-                <select name="Status" class="custom-select" id="inputGroupSelect01">
-                    @foreach (var item in Enum.GetNames(typeof(TaskItemStatus)))
-                    {
-                        <option value="@item" @If(@item, @Model.Status.ToString(), @select().ToString())>@item</option>
-                    }
-                </select>
+                <input name="Name" value="@Model.Name" type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" />
             </div>
         </div>
-    </div>
 
+        <div class="input-group mb-3 ml-3" style="max-width: 200px;">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01">Status</label>
+            </div>
+            <select name="Status" class="custom-select" id="inputGroupSelect01">
+                @foreach (var item in Enum.GetNames(typeof(TaskItemStatus)))
+                {
+                    <option value="@item" @If(@item, @Model.Status.ToString(), @select().ToString())>@item</option>
+                }
+            </select>
+        </div>
+    </div>
     <div class="mb-3">
-        <textarea class="form-control" aria-label="With textarea" style="min-height: 200px"></textarea>
+        <textarea class="form-control" aria-label="With textarea"></textarea>
     </div>
 
-    <button type="submit" class="btn btn-success float-right">Save</button>
+    <button type="submit" class="btn btn-success float-right">Update</button>
     <br />
     <br />
 </form>
