@@ -5,7 +5,7 @@ namespace MyTaskList.Models
     public sealed class TasksContext : DbContext
     {
         public TasksContext()
-            : base("PerformaceDb")
+            : base("Default")
         {
         }
 
