@@ -4,29 +4,37 @@
     ViewBag.Title = "New Task";
 }
 
-<p><h4>Create a new task</h4></p>
+<br />
 
 <form method="post" action="">
 
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <span class="input-group-text" id="basic-addon1">Name</span>
+    <div style="display: flex">
+        <div class="input-group">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Name</span>
+                </div>
+                <input name="Name" type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1"/>
+            </div>
         </div>
-        <input name="Name" type="text" class="form-control" placeholder="Task name" aria-label="Username" aria-describedby="basic-addon1"/>
+
+        <div class="input-group mb-3 ml-3" style="max-width: 200px;">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01">Status</label>
+            </div>
+            <select name="Status" class="custom-select" id="inputGroupSelect01">
+                @foreach (var item in Enum.GetNames(typeof(TaskItemStatus)))
+                {
+                    <option value="@item">@item</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="mb-3">
+        <textarea name="Description" class="form-control" aria-label="With textarea"></textarea>
     </div>
 
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <label class="input-group-text" for="inputGroupSelect01">Status</label>
-        </div>
-        <select name="Status" class="custom-select" id="inputGroupSelect01">
-            @foreach (var item in Enum.GetNames(typeof(TaskItemStatus)))
-            {
-                <option value="@item">@item</option>
-            }
-        </select>
-    </div>
-
-    <button type="submit" class="btn btn-success" value="Add">Create</button>
-
+    <button type="submit" class="btn btn-success float-right">Create</button>
+    <br/>
+    <br/>
 </form>

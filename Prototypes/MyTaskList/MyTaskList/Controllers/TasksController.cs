@@ -17,7 +17,7 @@ namespace MyTaskList.Controllers
         [HttpGet]
         public async Task<ActionResult> Index(string pattern = "", int page = 1)
         {
-            var tasksCount = _tasksContext.Tasks.Where(x => x.Name.Contains(pattern)).Count();
+            var tasksCount = _tasksContext.Tasks.Count(x => x.Name.Contains(pattern));
             var totalPages = (int)Math.Ceiling(tasksCount / (decimal)PageSize);
 
             if (page < 1 || (page > totalPages && totalPages > 0))
